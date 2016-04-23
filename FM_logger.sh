@@ -31,7 +31,7 @@ do
 		LASTPS=
 		LASTPI=
 		LASTRT=
-	fi	
+	fi
 	LASTPI=`busybox printf '%x' \`echo "$LOGDUMP" | grep "EVENT_PI_CODE " | tail -1 | cut -c 61-65\` 2> /dev/null`
 	LASTPS=`echo "$LOGDUMP" | grep "EVENT_PS_CHANGED " | tail -1 | cut -c 64-71`
 	LASTRT=`echo "$LOGDUMP" | grep "EVENT_RDS_TEXT RDS:" | tail -1 | cut -c 63-126`
@@ -49,7 +49,7 @@ do
 	if [ "$LASTPI" != "$OLDPI" ] && [ "$LASTPI" != "" ] && [ "$LASTPI" != "0" ]
 	then
 		OLDPI=$LASTPI
-		am start -a android.intent.action.MAIN -e message "PI: $LASTPI" -n com.rja.utility/.ShowToast > /dev/null # Comment out "> /dev/null" for debugging
+		am start -a android.intent.action.MAIN -e message "PI: $LASTPI" -n com.rja.utility/.ShowToast > /dev/null # Comment it out to get rid of toast notifications
 		echo -e "   Time: `date | cut -c 12-19`   PI: |$LASTPI|" >> "$LOGPATH`busybox date -I`.txt"
 	fi	
 	# PS name dump
