@@ -14,10 +14,15 @@
 LOGPATH=/mnt/sdcard/Android/FM_log/	#logs will have names YYYY-MM-DD.txt
 ###########
 mkdir -p $LOGPATH
+echo -e "   Time: `date | cut -c 12-19`   ####### Starting script #######" >> "$LOGPATH`busybox date -I`.txt"
 while true
-do
-	LOGDUMP=`logcat -d | grep "FmRxApp" | tac | grep 'tuneFreq' -m 1 -B 9999 | tac`	
-	LASTFREQ=`echo "$LOGDUMP" | grep "EVENT_TUNE_COMPLETE" | tail -1 | cut -c 72-76`
+do	
+	LOGDUMP=`logcat -d | grep "FmRxApp"`	
+	if [[ "`echo $LOGDUMP | grep tuneFreq | wc -l`" != 0 ]]
+	then
+		LOGDUMP=`echo "$LOGDUMP" | tac 2> /dev/null | grep 'tuneFreq' -m 1 -B 9999 | tac 2> /dev/null`
+		LASTFREQ=`echo "$LOGDUMP" | grep "EVENT_TUNE_COMPLETE" | tail -1 | cut -c 72-76`
+	fi
 	# Frequency dump
 	if [ "$LASTFREQ" != "" ] && [ "$LASTFREQ" != "$OLDFREQ" ] 
 	then
@@ -27,13 +32,19 @@ do
 		LASTPI=
 		LASTRT=
 	fi	
-	LASTPI=`busybox printf '%x' \`echo "$LOGDUMP" | grep "EVENT_PI_CODE " | tail -1 | cut -c 61-65\``
+	LASTPI=`busybox printf '%x' \`echo "$LOGDUMP" | grep "EVENT_PI_CODE " | tail -1 | cut -c 61-65\` 2> /dev/null`
 	LASTPS=`echo "$LOGDUMP" | grep "EVENT_PS_CHANGED " | tail -1 | cut -c 64-71`
 	LASTRT=`echo "$LOGDUMP" | grep "EVENT_RDS_TEXT RDS:" | tail -1 | cut -c 63-126`
-	echo -e "Old PI: $OLDPI\n    PI: $LASTPI" # Useful for debugging...
-	echo -e "Old Freq: $OLDFREQ\n    Freq: $LASTFREQ" # Useful for debugging...
-	echo -e "Old PS: $OLDPS\n    PS: $LASTPS" # Useful for debugging...
-	echo -e "Old RT: $OLDRT\n    RT: $LASTRT" # Useful for debugging...
+	#echo -e "Old Freq: |$OLDFREQ|\n    Freq: |$LASTFREQ|" # Useful for debugging...
+	#echo -e "Old PI: |$OLDPI|\n    PI: |$LASTPI|" # Useful for debugging...
+	#echo -e "Old PS: |$OLDPS|\n    PS: |$LASTPS|" # Useful for debugging...
+	#echo -e "Old RT: |$OLDRT|\n    RT: |$LASTRT|" # Useful for debugging...
+	clear
+	echo "### `date | cut -c 12-19` ###" # Useful for debugging...
+	echo -e "Freq: |$LASTFREQ|" # Useful for debugging...
+	echo -e "PI:   |$LASTPI|" # Useful for debugging...
+	echo -e "PS:   |$LASTPS|" # Useful for debugging...
+	echo -e "RT:   |$LASTRT|" # Useful for debugging...
 	# PI code dump
 	if [ "$LASTPI" != "$OLDPI" ] && [ "$LASTPI" != "" ] && [ "$LASTPI" != "0" ]
 	then
