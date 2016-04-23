@@ -29,4 +29,4 @@ mp107
 
 ## Other
 
-This script still has some bugs. You are welcome to report an issue.
+This script still has some bugs. You are welcome to report an issue and/or provide a fix.
