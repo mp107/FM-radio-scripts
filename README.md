@@ -9,8 +9,8 @@ I use version without a drawer icon.
 Don't worry, this app seem to be safe (but you have to enable installing form unknown sources to install it):  
 https://www.virustotal.com/pl/file/0927571c9bdd4475213fa15cbff900c0c394c4296819318031ddc158badb5448/analysis/  
 https://apkscan.nviso.be/report/show/3362bd92a9f0cfaf49dfbeb5a406080c  
-This script succesfully works on Sony Ericsson Xperia Mini Pro with CyanogenMod 9.  
-To use it you will have to have FM Radio application installed.  
+This script works succesfully on Sony Ericsson Xperia Mini Pro with CyanogenMod 9.  
+To use it you will have to have the FM Radio application installed.  
 
 ## Screenshots:
 
